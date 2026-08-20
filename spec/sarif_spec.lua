@@ -1,6 +1,6 @@
-local bufnr = vim.uri_to_bufnr("file:///foo.java")
 local api = vim.api
 local parser = require("lint.parser")
+local bufnr = vim.uri_to_bufnr("file:///foo.java")
 
 describe("for_sarif", function()
   it("ignores results for other buffers", function()
@@ -358,5 +358,64 @@ describe("for_sarif", function()
       source = "SpecTool",
       code = "placeholder.code",
     }, result[1])
+  end)
+
+  it("can parse relative uri within artifactLocation", function()
+    local parse = parser.for_sarif({})
+    local bufnr = vim.uri_to_bufnr("file:///foo/bar/baz.java")
+    local output = [[
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "language": "en",
+          "name": "SpecTool"
+        }
+      },
+      "results": [
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "foo/bar/baz.java"
+                },
+                "region": {
+                  "endColumn": 20,
+                  "startColumn": 10,
+                  "startLine": 1
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "This is a placeholder message."
+          },
+          "ruleId": "placeholder.code"
+        }
+      ]
+    }
+  ]
+}
+    ]]
+    local result = parse(output, bufnr, "/")
+    assert.are.same(
+      {
+        {
+          lnum = 0,
+          col = 9,
+          end_col = 18,
+          severity = vim.diagnostic.severity.WARN,
+          message = "This is a placeholder message.",
+          source = "SpecTool",
+          code = "placeholder.code",
+        },
+      },
+      result
+    )
   end)
 end)
