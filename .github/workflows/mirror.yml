@@ -20,5 +20,5 @@ jobs:
         id: mirror
         uses: bridgelightcloud/github-mirror-action@v3
         with:
-          origin: 'https://codeberg.org/joshwlivingston/nvim-lint'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          origin: "https://codeberg.org/joshwlivingston/nvim-lint"
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
