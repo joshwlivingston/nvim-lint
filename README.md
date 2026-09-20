@@ -212,6 +212,7 @@ Other dedicated linters that are built-in are:
 | [HTML Tidy][12]                        | `tidy`                 |
 | [Inko][17]                             | `inko`                 |
 | [janet][janet]                         | `janet`                |
+| [jarl][jarl]                           | `jarl`                 |
 | [joker][joker]                         | `joker`                |
 | [jshint][jshint]                       | `jshint`               |
 | [json5][json5]                         | `json5`                |
@@ -785,3 +786,4 @@ vimcats -t -f lua/lint.lua lua/lint/parser.lua > doc/lint.txt
 [unmake]: https://github.com/mcandre/unmake
 [detekt]: https://detekt.dev/
 [glinter]: https://github.com/pairshaped/glinter
+[jarl]: https://jarl.etiennebacher.com/
